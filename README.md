@@ -6,14 +6,6 @@
 
 [Demo](https://ardean.github.io/jsGBC-web/)
 
-## Usage
-
-I suggest you to use [jspm](http://jspm.io/) as your package manager.
-
-### Directly in a browser
-
-Please checkout the [index-dist.html](https://ardean.github.io/jsGBC-web/index-dist.html) file for direct usage in a browser.
-
 ## License
 
 [MIT](LICENSE.md)
