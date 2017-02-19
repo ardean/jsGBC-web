@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>jsGBC-web</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="jsGBC-web">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#b2e200">
+  <link rel="stylesheet" href="./index.css">
+  <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <link rel="import" href="bower_components/jsgbc-ui/jsgbc-ui.html">
+  <link rel="import" href="bower_components/paper-fab-speed-dial/paper-fab-speed-dial.html">
+  <link rel="import" href="bower_components/paper-fab-speed-dial/paper-fab-speed-dial-action.html">
+</head>
+
+<body>
+  <jsgbc-ui loading>
+    <h1 slot="loading">Loading...</h1>
+    <canvas class="pixelated" slot="lcd"></canvas>
+  </jsgbc-ui>
+  <style is="custom-style">
+    paper-fab-speed-dial {
+      --paper-fab-speed-dial-background: #b2e200;
+    }
+
+    paper-fab-speed-dial-action {
+      --paper-fab-speed-dial-action-background: #b2e200;
+    }
+  </style>
+  <paper-fab-speed-dial icon="menu">
+    <paper-fab-speed-dial-action icon="icons:file-upload" id="upload-save">Upload Save</paper-fab-speed-dial-action>
+    <paper-fab-speed-dial-action icon="icons:file-download" id="download-save">Download Save</paper-fab-speed-dial-action>
+    <paper-fab-speed-dial-action icon="icons:add" id="insert-cartridge">Insert Cartridge</paper-fab-speed-dial-action>
+  </paper-fab-speed-dial>
+  <script>
+  window.addEventListener("WebComponentsReady", function() {
+  window.WebComponentsReady = true;
+});
+</script>
+  <!-- inject:html -->
+  <!-- endinject -->
+</body>
+
+</html>
