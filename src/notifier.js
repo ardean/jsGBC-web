@@ -14,6 +14,16 @@ class Notifier {
     this.hide = this.hide.bind(this);
   }
 
+  bind(gameboy) {
+    gameboy
+      .on("stateLoaded", ({ filename }) => {
+        notifier.notify("Loaded " + filename);
+      })
+      .on("stateSaved", ({ filename }) => {
+        notifier.notify("Saved  " + filename);
+      });
+  }
+
   notify(message) {
     if (this.timeout) {
       clearTimeout(this.timeout);

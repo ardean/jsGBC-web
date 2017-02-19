@@ -81,7 +81,6 @@ class FabButtons {
         binaryHandle.onload = function() {
           if (this.readyState === 2) {
             const data = JSON.parse(this.result);
-            console.log(data);
             gameboy.core.loadState(data);
           }
         };

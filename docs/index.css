@@ -20,8 +20,8 @@ body {
   left: calc((100vw - 111.11vh) / 2);
   right: 0;
   bottom: 0;
-  height: 100vh;
-  width: 111.11vh;
+  height: 100vh !important;
+  width: 111.11vh !important;
 }
 
 .pixelated {
