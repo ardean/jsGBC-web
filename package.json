@@ -1,6 +1,6 @@
 {
   "name": "jsgbc-web",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A GameBoy Color Emulator for the Web",
   "main": "src/index.js",
   "repository": "https://github.com/ardean/jsGBC-web",
@@ -20,7 +20,7 @@
     "jsgbc"
   ],
   "scripts": {
-    "start": "gulp dev && http-server ./",
+    "start": "gulp dev && node dev-server/index.js",
     "build": "npm run build-src && gulp build && cpy index.js docs/ && npm run build-assets",
     "build-src": "jspm build src/index.js index.js --minify --skip-source-maps",
     "build-assets": "cpy bower_components/jsgbc-ui/images/*.png docs/bower_components/jsgbc-ui/images/ && cpy bower_components/webcomponentsjs/webcomponents.min.js docs/bower_components/webcomponentsjs/"
@@ -28,10 +28,10 @@
   "devDependencies": {
     "bower": "^1.8.0",
     "cpy-cli": "^1.0.1",
+    "express": "^4.14.1",
     "gulp": "^3.9.1",
     "gulp-inject": "^4.2.0",
     "gulp-vulcanize": "^6.1.0",
-    "http-server": "^0.9.0",
     "jspm": "^0.17.0-beta.38",
     "require-dir": "^0.3.1"
   },
@@ -42,7 +42,7 @@
       "jquery": "npm:jquery@^3.1.1",
       "jsgamepad": "github:ardean/jsGamepad@^0.1.0",
       "jsfullscreen": "github:ardean/jsFullscreen@^0.1.0",
-      "jsgbc-core": "github:ardean/jsGBC-core@master",
+      "jsgbc-core": "github:ardean/jsGBC-core@^0.3.0",
       "jspointerlock": "github:ardean/jsPointerLock@^1.0.0"
     },
     "devDependencies": {

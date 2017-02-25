@@ -2,7 +2,7 @@ import $ from "jquery";
 import gamepad from "jsgamepad";
 import actions from "./actions.js";
 
-// TODO: implement save, load, speed in core
+// TODO: implement save & load state in core
 
 class GamepadButtons {
   bind(gameboy) {
@@ -15,8 +15,10 @@ class GamepadButtons {
 
     gamepad.on("buttonChanged", ({ buttonIndex, button, gamepad }) => {
       const action = actions.fromGamepad(buttonIndex);
-      if (action === "speed") {
-        gameboy.setSpeed(this.getSpeedValue(button));
+      if (action) {
+        gameboy.actionChange(action, {
+          value: button.value
+        });
       }
     });
 
@@ -28,11 +30,6 @@ class GamepadButtons {
     });
 
     gamepad.watch();
-  }
-
-  getSpeedValue(button) {
-    return (button && typeof button.value === "number" ? button.value : 1) * 2 +
-      1;
   }
 }
 
