@@ -6,47 +6,10 @@ body {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -webkit-app-region: drag;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow: auto;
-}
-
-.fullscreen {
-  position: fixed;
-  top: 0;
-  left: calc((100vw - 111.11vh) / 2);
-  right: 0;
-  bottom: 0;
-  height: 100vh !important;
-  width: 111.11vh !important;
-}
-
-.pixelated {
-  /* Legal fallback */
-  image-rendering: optimizeSpeed;
-  /* Firefox        */
-  image-rendering: -moz-crisp-edges;
-  /* Opera          */
-  image-rendering: -o-crisp-edges;
-  /* Safari         */
-  image-rendering: -webkit-optimize-contrast;
-  /* CSS3 Proposed  */
-  image-rendering: optimize-contrast;
-  /* CSS4 Proposed  */
-  image-rendering: crisp-edges;
-  /* CSS4 Proposed  */
-  image-rendering: pixelated;
-  /* IE8+           */
-  -ms-interpolation-mode: nearest-neighbor;
-}
-
-.flex {
-  flex: 1;
-}
-
-::selection {
-  background: transparent;
+  height: 100vh;
 }

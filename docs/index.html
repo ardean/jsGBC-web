@@ -25,12 +25,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
   <title>jsGBC-web</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#f5f5f5">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="jsGBC-web">
   <meta name="apple-mobile-web-app-status-bar-style" content="#b2e200">
-  <link rel="stylesheet" href="./index.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="index.css">
+
   <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
   </head>
 
@@ -235,6 +241,7 @@ createdCallback: function () {
 if (settings.disableUpgradeEnabled) {
 if (this.hasAttribute('disable-upgrade')) {
 this._propertySetter = disableUpgradePropertySetter;
+this._configValue = null;
 this.__data__ = {};
 return;
 } else {
@@ -414,6 +421,7 @@ Polymer.Base.attributeChangedCallback = function (name, oldValue, newValue) {
 if (!this.__hasInitialized && name === 'disable-upgrade') {
 this.__hasInitialized = true;
 this._propertySetter = Polymer.Bind._modelApi._propertySetter;
+this._configValue = Polymer.Base._configValue;
 this.__initialize();
 }
 origAttributeChangedCallback.call(this, name, oldValue, newValue);
@@ -816,7 +824,7 @@ default:
 return value != null ? value : undefined;
 }
 }
-});Polymer.version = "1.8.0";Polymer.Base._addFeature({
+});Polymer.version = "1.8.1";Polymer.Base._addFeature({
 _registerFeatures: function () {
 this._prepIs();
 this._prepBehaviors();
@@ -4989,6 +4997,7 @@ this._effectEffects('__static__', null, this._propertyEffects.__static__);
 }
 });(function () {
 var usePolyfillProto = Polymer.Settings.usePolyfillProto;
+var avoidInstanceProperties = Boolean(Object.getOwnPropertyDescriptor(document.documentElement, 'properties'));
 Polymer.Base._addFeature({
 _setupConfigure: function (initialConfig) {
 this._config = {};
@@ -5026,7 +5035,7 @@ var config = {};
 for (var i = 0; i < this.behaviors.length; i++) {
 this._configureProperties(this.behaviors[i].properties, config);
 }
-this._configureProperties(this.properties, config);
+this._configureProperties(avoidInstanceProperties ? this.__proto__.properties : this.properties, config);
 this.mixin(config, this._aboveConfig);
 this._config = config;
 if (this._clients && this._clients.length) {
@@ -5723,6 +5732,37 @@ cssText += this.resolveCss(e.import.body.textContent, e.import);
 }
 return cssText;
 },
+styleIncludesToTemplate: function (targetTemplate) {
+var styles = targetTemplate.content.querySelectorAll('style[include]');
+for (var i = 0, s; i < styles.length; i++) {
+s = styles[i];
+s.parentNode.insertBefore(this._includesToFragment(s.getAttribute('include')), s);
+}
+},
+_includesToFragment: function (styleIncludes) {
+var includeArray = styleIncludes.trim().split(' ');
+var frag = document.createDocumentFragment();
+for (var i = 0; i < includeArray.length; i++) {
+var t = Polymer.DomModule.import(includeArray[i], 'template');
+if (t) {
+this._addStylesToFragment(frag, t.content);
+}
+}
+return frag;
+},
+_addStylesToFragment: function (frag, source) {
+var s$ = source.querySelectorAll('style');
+for (var i = 0, s; i < s$.length; i++) {
+s = s$[i];
+var include = s.getAttribute('include');
+if (include) {
+frag.appendChild(this._includesToFragment(include));
+}
+if (s.textContent) {
+frag.appendChild(s.cloneNode(true));
+}
+}
+},
 isTargetedBuild: function (buildType) {
 return settings.useNativeShadow ? buildType === 'shadow' : buildType === 'shady';
 },
@@ -6307,6 +6347,9 @@ _prepShimStyles: function () {
 if (this._template) {
 var hasTargetedCssBuild = styleUtil.isTargetedBuild(this.__cssBuild);
 if (settings.useNativeCSSProperties && this.__cssBuild === 'shadow' && hasTargetedCssBuild) {
+if (settings.preserveStyleIncludes) {
+styleUtil.styleIncludesToTemplate(this._template);
+}
 return;
 }
 this._styles = this._styles || this._collectStyles();
@@ -8400,594 +8443,7 @@ if (!Polymer.Settings.suppressTemplateNotifications || this.notifyDomChange) {
 this.fire('dom-change');
 }
 }
-});</script><dom-module id="jsgbc-ui" assetpath="bower_components/jsgbc-ui/">
-  <template>
-    <style>
-      .gbc {
-        display: flex;
-        flex-direction: column;
-        width: 400px;
-        height: 709px;
-        min-width: 400px;
-        min-height: 709px;
-        max-width: 400px;
-        max-height: 709px;
-      }
-
-      .gbc-body {
-        background-color: #b2e200;
-        border-radius: 22px 22px 30% 30% / 22px 22px 50px 50px;
-        flex: 1;
-      }
-
-      .gbc-screen-frame {
-        background-color: #000;
-        border-radius: 22px 22px 0 0;
-        margin: 0 20px;
-        margin-top: 22px;
-        padding-top: 40px;
-        padding-bottom: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .gbc-screen-frame-bottom {
-        background-color: #000;
-        border-radius: 0 0 14px 14px / 0 0 22px 22px;
-        height: 50px;
-        margin: 0 20px;
-      }
-
-      .gbc-screen-frame-end {
-        background-color: #000;
-        border-radius: 0 0 20% 20% / 0 0 100% 100%;
-        height: 7px;
-        margin: 0 30px;
-        margin-top: -2px;
-      }
-
-      .gbc-screen {
-        width: 233.33px;
-        height: 210px;
-        display: flex;
-        background-image: url("bower_components/jsgbc-ui/images/lcd.png");
-      }
-
-      .gbc-loading,
-      .gbc-lcd {
-        flex: 1;
-        display: flex;
-      }
-
-      .gbc-lcd {
-        display: none;
-      }
-
-      .gbc-loading {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .gbc-middle {
-        margin: 0 20px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding-top: 80px;
-      }
-
-      .gbc-button {
-        -webkit-app-region: no-drag;
-        cursor: pointer;
-      }
-
-      .gbc-dpad {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-left: 10px;
-      }
-
-      .gbc-dpad .gbc-button,
-      .gbc-dpad-empty {
-        height: 30px;
-        width: 30px;
-        background-color: #000;
-      }
-
-      .gbc-dpad-middle {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .gbc-button-up {
-        border-radius: 3px 3px 0 0;
-      }
-
-      .gbc-button-right {
-        border-radius: 0 3px 3px 0;
-      }
-
-      .gbc-button-down {
-        border-radius: 0 0 3px 3px;
-      }
-
-      .gbc-button-left {
-        border-radius: 3px 0 0 3px;
-      }
-
-      .gbc-buttons-right {
-        display: flex;
-        flex-direction: column;
-        margin-right: 10px;
-        margin-top: 5px;
-      }
-
-      .gbc-button-a,
-      .gbc-button-b {
-        height: 50px;
-        width: 50px;
-        background-color: #000;
-        border-radius: 50%;
-        color: #CCC;
-        text-align: center;
-      }
-
-      .gbc-buttons-right .gbc-button-label {
-        padding-top: 5px;
-        padding-right: 7px;
-        font-size: 35px;
-      }
-
-      .gbc-button-a {
-        margin-left: 70px;
-        margin-bottom: -10px;
-      }
-
-      .gbc-button-b {
-        margin-right: 70px;
-        margin-top: -10px;
-      }
-
-      .gbc-bottom {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        margin-top: 70px;
-      }
-
-      .gbc-select,
-      .gbc-start {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .gbc-button-select,
-      .gbc-button-start {
-        background-color: #000;
-        height: 15px;
-        width: 35px;
-        margin: 0 15px;
-        margin-bottom: 9px;
-        border-radius: 5px;
-      }
-
-      .gbc-body-end {
-        background-color: #b2e200;
-        border-radius: 0 0 20% 20% / 0 0 100% 100%;
-        height: 3px;
-        margin: 0 80px;
-        margin-top: -4px;
-      }
-    </style>
-    <div class="gbc">
-      <div class="gbc-body">
-        <div class="gbc-screen-frame">
-          <div class="gbc-screen" id="screen">
-            <div class="gbc-loading" id="loading">
-              <slot name="loading"></slot>
-            </div>
-            <div class="gbc-lcd" id="lcd">
-              <slot name="lcd"></slot>
-            </div>
-          </div>
-        </div>
-        <div class="gbc-screen-frame-bottom"></div>
-        <div class="gbc-screen-frame-end"></div>
-
-        <div class="gbc-middle">
-          <div class="gbc-dpad">
-            <div class="gbc-button gbc-dpad-button gbc-button-up" id="up"></div>
-            <div class="gbc-dpad-middle">
-              <div class="gbc-button gbc-dpad-button gbc-button-left" id="left"></div>
-              <div class="gbc-dpad-empty"></div>
-              <div class="gbc-button gbc-dpad-button gbc-button-right" id="right"></div>
-            </div>
-            <div class="gbc-button gbc-dpad-button gbc-button-down" id="down"></div>
-          </div>
-
-          <div class="gbc-buttons-right">
-            <div>
-              <div class="gbc-button gbc-button-a" id="a">
-                <div class="gbc-button-label">A</div>
-              </div>
-            </div>
-            <div>
-              <div class="gbc-button gbc-button-b" id="b">
-                <div class="gbc-button-label">B</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="gbc-bottom">
-          <div class="gbc-select">
-            <div class="gbc-button gbc-button-select" id="select"></div>
-            <div class="gbc-bottom-label">SELECT</div>
-          </div>
-          <div class="gbc-start">
-            <div class="gbc-button gbc-button-start" id="start"></div>
-            <div class="gbc-bottom-label">START</div>
-          </div>
-        </div>
-      </div>
-      <div class="gbc-body-end"></div>
-    </div>
-  </template>
-  <script>
-  Polymer({
-  is: "jsgbc-ui",
-  properties: {
-    loading: {
-      type: Boolean,
-      observer: "_loadingChanged"
-    }
-  },
-  listeners: {
-    "up.down": "_handleDown",
-    "up.up": "_handleUp",
-    "right.down": "_handleDown",
-    "right.up": "_handleUp",
-    "down.down": "_handleDown",
-    "down.up": "_handleUp",
-    "left.down": "_handleDown",
-    "left.up": "_handleUp",
-    "a.down": "_handleDown",
-    "a.up": "_handleUp",
-    "b.down": "_handleDown",
-    "b.up": "_handleUp",
-    "start.down": "_handleDown",
-    "start.up": "_handleUp",
-    "select.down": "_handleDown",
-    "select.up": "_handleUp"
-  },
-  attached: function() {
-    this.screenElement = this.$.screen;
-    this.lcdElement = this.$.lcd.querySelector("*");
-    this.lcdElement.classList.add("flex");
-    this._loadingChanged(this.loading);
-  },
-  _loadingChanged: function(newValue) {
-    if (!this.lcdElement) return;
-    if (newValue) {
-      this.$.loading.style.display = "flex";
-      this.$.lcd.style.display = "none";
-      this.lcdElement.style.display = "none";
-    } else {
-      this.$.loading.style.display = "none";
-      this.$.lcd.style.display = "flex";
-      this.lcdElement.style.display = "flex";
-    }
-  },
-  _handleDown: function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.fire("down", { button: e.currentTarget.id });
-    return false;
-  },
-  _handleUp: function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.fire("up", { button: e.currentTarget.id });
-    return false;
-  }
-});
-</script>
-</dom-module>
-
-
-
-
-
-<script>
-
-  (function() {
-
-    // monostate data
-    var metaDatas = {};
-    var metaArrays = {};
-    var singleton = null;
-
-    Polymer.IronMeta = Polymer({
-
-      is: 'iron-meta',
-
-      properties: {
-
-        /**
-         * The type of meta-data.  All meta-data of the same type is stored
-         * together.
-         */
-        type: {
-          type: String,
-          value: 'default',
-          observer: '_typeChanged'
-        },
-
-        /**
-         * The key used to store `value` under the `type` namespace.
-         */
-        key: {
-          type: String,
-          observer: '_keyChanged'
-        },
-
-        /**
-         * The meta-data to store or retrieve.
-         */
-        value: {
-          type: Object,
-          notify: true,
-          observer: '_valueChanged'
-        },
-
-        /**
-         * If true, `value` is set to the iron-meta instance itself.
-         */
-         self: {
-          type: Boolean,
-          observer: '_selfChanged'
-        },
-
-        /**
-         * Array of all meta-data values for the given type.
-         */
-        list: {
-          type: Array,
-          notify: true
-        }
-
-      },
-
-      hostAttributes: {
-        hidden: true
-      },
-
-      /**
-       * Only runs if someone invokes the factory/constructor directly
-       * e.g. `new Polymer.IronMeta()`
-       *
-       * @param {{type: (string|undefined), key: (string|undefined), value}=} config
-       */
-      factoryImpl: function(config) {
-        if (config) {
-          for (var n in config) {
-            switch(n) {
-              case 'type':
-              case 'key':
-              case 'value':
-                this[n] = config[n];
-                break;
-            }
-          }
-        }
-      },
-
-      created: function() {
-        // TODO(sjmiles): good for debugging?
-        this._metaDatas = metaDatas;
-        this._metaArrays = metaArrays;
-      },
-
-      _keyChanged: function(key, old) {
-        this._resetRegistration(old);
-      },
-
-      _valueChanged: function(value) {
-        this._resetRegistration(this.key);
-      },
-
-      _selfChanged: function(self) {
-        if (self) {
-          this.value = this;
-        }
-      },
-
-      _typeChanged: function(type) {
-        this._unregisterKey(this.key);
-        if (!metaDatas[type]) {
-          metaDatas[type] = {};
-        }
-        this._metaData = metaDatas[type];
-        if (!metaArrays[type]) {
-          metaArrays[type] = [];
-        }
-        this.list = metaArrays[type];
-        this._registerKeyValue(this.key, this.value);
-      },
-
-      /**
-       * Retrieves meta data value by key.
-       *
-       * @method byKey
-       * @param {string} key The key of the meta-data to be returned.
-       * @return {*}
-       */
-      byKey: function(key) {
-        return this._metaData && this._metaData[key];
-      },
-
-      _resetRegistration: function(oldKey) {
-        this._unregisterKey(oldKey);
-        this._registerKeyValue(this.key, this.value);
-      },
-
-      _unregisterKey: function(key) {
-        this._unregister(key, this._metaData, this.list);
-      },
-
-      _registerKeyValue: function(key, value) {
-        this._register(key, value, this._metaData, this.list);
-      },
-
-      _register: function(key, value, data, list) {
-        if (key && data && value !== undefined) {
-          data[key] = value;
-          list.push(value);
-        }
-      },
-
-      _unregister: function(key, data, list) {
-        if (key && data) {
-          if (key in data) {
-            var value = data[key];
-            delete data[key];
-            this.arrayDelete(list, value);
-          }
-        }
-      }
-
-    });
-
-    Polymer.IronMeta.getIronMeta = function getIronMeta() {
-       if (singleton === null) {
-         singleton = new Polymer.IronMeta();
-       }
-       return singleton;
-     };
-
-    /**
-    `iron-meta-query` can be used to access infomation stored in `iron-meta`.
-
-    Examples:
-
-    If I create an instance like this:
-
-        <iron-meta key="info" value="foo/bar"></iron-meta>
-
-    Note that value="foo/bar" is the metadata I've defined. I could define more
-    attributes or use child nodes to define additional metadata.
-
-    Now I can access that element (and it's metadata) from any `iron-meta-query` instance:
-
-         var value = new Polymer.IronMetaQuery({key: 'info'}).value;
-
-    @group Polymer Iron Elements
-    @element iron-meta-query
-    */
-    Polymer.IronMetaQuery = Polymer({
-
-      is: 'iron-meta-query',
-
-      properties: {
-
-        /**
-         * The type of meta-data.  All meta-data of the same type is stored
-         * together.
-         */
-        type: {
-          type: String,
-          value: 'default',
-          observer: '_typeChanged'
-        },
-
-        /**
-         * Specifies a key to use for retrieving `value` from the `type`
-         * namespace.
-         */
-        key: {
-          type: String,
-          observer: '_keyChanged'
-        },
-
-        /**
-         * The meta-data to store or retrieve.
-         */
-        value: {
-          type: Object,
-          notify: true,
-          readOnly: true
-        },
-
-        /**
-         * Array of all meta-data values for the given type.
-         */
-        list: {
-          type: Array,
-          notify: true
-        }
-
-      },
-
-      /**
-       * Actually a factory method, not a true constructor. Only runs if
-       * someone invokes it directly (via `new Polymer.IronMeta()`);
-       *
-       * @param {{type: (string|undefined), key: (string|undefined)}=} config
-       */
-      factoryImpl: function(config) {
-        if (config) {
-          for (var n in config) {
-            switch(n) {
-              case 'type':
-              case 'key':
-                this[n] = config[n];
-                break;
-            }
-          }
-        }
-      },
-
-      created: function() {
-        // TODO(sjmiles): good for debugging?
-        this._metaDatas = metaDatas;
-        this._metaArrays = metaArrays;
-      },
-
-      _keyChanged: function(key) {
-        this._setValue(this._metaData && this._metaData[key]);
-      },
-
-      _typeChanged: function(type) {
-        this._metaData = metaDatas[type];
-        this.list = metaArrays[type];
-        if (this.key) {
-          this._keyChanged(this.key);
-        }
-      },
-
-      /**
-       * Retrieves meta data value by key.
-       * @param {string} key The key of the meta-data to be returned.
-       * @return {*}
-       */
-      byKey: function(key) {
-        return this._metaData && this._metaData[key];
-      }
-
-    });
-
-  })();
-</script>
+});</script>
 
 <style>
   /* IE 10 support for HTML5 hidden attr */
@@ -9343,7 +8799,674 @@ this.fire('dom-change');
 
   }
 
-</style><dom-module id="iron-icon" assetpath="bower_components/iron-icon/">
+</style><dom-module id="jsgbc-ui" assetpath="bower_components/jsgbc-ui/">
+  <template>
+    <style>
+       :host:not([no-pixelation]) ::shadow .jsgbc-ui-canvas {
+        /* Legal fallback */
+        image-rendering: optimizeSpeed;
+        /* Firefox        */
+        image-rendering: -moz-crisp-edges;
+        /* Opera          */
+        image-rendering: -o-crisp-edges;
+        /* Safari         */
+        image-rendering: -webkit-optimize-contrast;
+        /* CSS3 Proposed  */
+        image-rendering: optimize-contrast;
+        /* CSS4 Proposed  */
+        image-rendering: crisp-edges;
+        /* CSS4 Proposed  */
+        image-rendering: pixelated;
+        /* IE8+           */
+        -ms-interpolation-mode: nearest-neighbor;
+      }
+      
+       :host ::shadow .jsgbc-ui-canvas {
+        @apply --layout-flex;
+      }
+      
+      .jsgbc-ui-inner {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+        height: 709px;
+        min-width: 400px;
+        min-height: 709px;
+        max-width: 400px;
+        max-height: 709px;
+      }
+      
+      .jsgbc-ui-body {
+        background-color: #b2e200;
+        border-radius: 22px 22px 30% 30% / 22px 22px 50px 50px;
+        flex: 1;
+      }
+      
+      .jsgbc-ui-screen-frame {
+        background-color: #000;
+        border-radius: 22px 22px 0 0;
+        margin: 0 20px;
+        margin-top: 22px;
+        padding-top: 40px;
+        padding-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .jsgbc-ui-screen-frame-bottom {
+        background-color: #000;
+        border-radius: 0 0 14px 14px / 0 0 22px 22px;
+        height: 50px;
+        margin: 0 20px;
+      }
+      
+      .jsgbc-ui-screen-frame-end {
+        background-color: #000;
+        border-radius: 0 0 20% 20% / 0 0 100% 100%;
+        height: 7px;
+        margin: 0 30px;
+        margin-top: -2px;
+      }
+      
+      .jsgbc-ui-screen {
+        width: 233.33px;
+        height: 210px;
+        display: flex;
+        background-image: url("bower_components/jsgbc-ui/images/lcd.png");
+        background-repeat: repeat;
+        background-size: 3px;
+      }
+      
+      .jsgbc-ui-loading,
+      .jsgbc-ui-lcd {
+        flex: 1;
+        display: flex;
+      }
+      
+      .jsgbc-ui-lcd {
+        display: none;
+      }
+      
+      .jsgbc-ui-loading {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .jsgbc-ui-middle {
+        margin: 0 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-top: 80px;
+      }
+      
+      .jsgbc-ui-button {
+        -webkit-app-region: no-drag;
+        cursor: pointer;
+      }
+      
+      .jsgbc-ui-dpad {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+      }
+      
+      .jsgbc-ui-dpad .jsgbc-ui-button,
+      .jsgbc-ui-dpad-empty {
+        height: 30px;
+        width: 30px;
+        background-color: #000;
+      }
+      
+      .jsgbc-ui-dpad-middle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .jsgbc-ui-button-up {
+        border-radius: 3px 3px 0 0;
+      }
+      
+      .jsgbc-ui-button-right {
+        border-radius: 0 3px 3px 0;
+      }
+      
+      .jsgbc-ui-button-down {
+        border-radius: 0 0 3px 3px;
+      }
+      
+      .jsgbc-ui-button-left {
+        border-radius: 3px 0 0 3px;
+      }
+      
+      .jsgbc-ui-buttons-right {
+        display: flex;
+        flex-direction: column;
+        margin-right: 10px;
+        margin-top: 5px;
+      }
+      
+      .jsgbc-ui-button-a,
+      .jsgbc-ui-button-b {
+        height: 50px;
+        width: 50px;
+        background-color: #000;
+        border-radius: 50%;
+        color: #CCC;
+        text-align: center;
+      }
+      
+      .jsgbc-ui-buttons-right .jsgbc-ui-button-label {
+        padding-top: 5px;
+        padding-right: 7px;
+        font-size: 35px;
+      }
+      
+      .jsgbc-ui-button-a {
+        margin-left: 70px;
+        margin-bottom: -10px;
+      }
+      
+      .jsgbc-ui-button-b {
+        margin-right: 70px;
+        margin-top: -10px;
+      }
+      
+      .jsgbc-ui-bottom {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 70px;
+      }
+      
+      .jsgbc-ui-select,
+      .jsgbc-ui-start {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .jsgbc-ui-button-select,
+      .jsgbc-ui-button-start {
+        background-color: #000;
+        height: 15px;
+        width: 35px;
+        margin: 0 15px;
+        margin-bottom: 9px;
+        border-radius: 5px;
+      }
+      
+      .jsgbc-ui-body-end {
+        background-color: #b2e200;
+        border-radius: 0 0 20% 20% / 0 0 100% 100%;
+        height: 3px;
+        margin: 0 80px;
+        margin-top: -4px;
+      }
+      
+      .jsgbc-ui.jsgbc-ui-fullscreen::before {
+        content: "";
+        background-color: #000;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      
+      .jsgbc-ui-fullscreen .jsgbc-ui-screen {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+      }
+      
+      @media (min-aspect-ratio: 160 / 144) {
+        .jsgbc-ui-fullscreen .jsgbc-ui-screen {
+          top: 0;
+          left: calc((100vw - 111.11vh) / 2);
+          height: 100vh;
+          width: 111.11vh;
+          background-size: 1vh;
+        }
+      }
+      
+      @media (max-aspect-ratio: 160 / 144) {
+        .jsgbc-ui-fullscreen .jsgbc-ui-screen {
+          top: calc((100vh - 90vw) / 2);
+          left: 0;
+          height: 90vw;
+          width: 100vw;
+          background-size: 1vw;
+        }
+      }
+
+    </style>
+    <div class="jsgbc-ui-inner" id="inner">
+      <div class="jsgbc-ui-body">
+        <div class="jsgbc-ui-screen-frame">
+          <div class="jsgbc-ui-screen" id="screen">
+            <div class="jsgbc-ui-loading" id="loading">
+              <slot name="loading"></slot>
+            </div>
+            <div class="jsgbc-ui-lcd" id="lcd">
+              <slot name="lcd"></slot>
+            </div>
+          </div>
+        </div>
+        <div class="jsgbc-ui-screen-frame-bottom"></div>
+        <div class="jsgbc-ui-screen-frame-end"></div>
+
+        <div class="jsgbc-ui-middle">
+          <div class="jsgbc-ui-dpad">
+            <div class="jsgbc-ui-button jsgbc-ui-dpad-button jsgbc-ui-button-up" id="up"></div>
+            <div class="jsgbc-ui-dpad-middle">
+              <div class="jsgbc-ui-button jsgbc-ui-dpad-button jsgbc-ui-button-left" id="left"></div>
+              <div class="jsgbc-ui-dpad-empty"></div>
+              <div class="jsgbc-ui-button jsgbc-ui-dpad-button jsgbc-ui-button-right" id="right"></div>
+            </div>
+            <div class="jsgbc-ui-button jsgbc-ui-dpad-button jsgbc-ui-button-down" id="down"></div>
+          </div>
+
+          <div class="jsgbc-ui-buttons-right">
+            <div>
+              <div class="jsgbc-ui-button jsgbc-ui-button-a" id="a">
+                <div class="jsgbc-ui-button-label">A</div>
+              </div>
+            </div>
+            <div>
+              <div class="jsgbc-ui-button jsgbc-ui-button-b" id="b">
+                <div class="jsgbc-ui-button-label">B</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="jsgbc-ui-bottom">
+          <div class="jsgbc-ui-select">
+            <div class="jsgbc-ui-button jsgbc-ui-button-select" id="select"></div>
+            <div class="jsgbc-ui-bottom-label">SELECT</div>
+          </div>
+          <div class="jsgbc-ui-start">
+            <div class="jsgbc-ui-button jsgbc-ui-button-start" id="start"></div>
+            <div class="jsgbc-ui-bottom-label">START</div>
+          </div>
+        </div>
+      </div>
+      <div class="jsgbc-ui-body-end"></div>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: "jsgbc-ui",
+      properties: {
+        loading: {
+          type: Boolean,
+          observer: "_loadingChanged"
+        },
+        fullscreen: {
+          type: Boolean,
+          observer: "_fullscreenChanged",
+          value: false
+        }
+      },
+      listeners: {
+        "up.down": "_handleDown",
+        "up.up": "_handleUp",
+        "right.down": "_handleDown",
+        "right.up": "_handleUp",
+        "down.down": "_handleDown",
+        "down.up": "_handleUp",
+        "left.down": "_handleDown",
+        "left.up": "_handleUp",
+        "a.down": "_handleDown",
+        "a.up": "_handleUp",
+        "b.down": "_handleDown",
+        "b.up": "_handleUp",
+        "start.down": "_handleDown",
+        "start.up": "_handleUp",
+        "select.down": "_handleDown",
+        "select.up": "_handleUp"
+      },
+      attached: function () {
+        this.fullscreenClassName = "jsgbc-ui-fullscreen";
+        this.innerElement = this.$.inner;
+        this.screenElement = this.$.screen;
+        this.lcdElement = this.$.lcd.querySelector("*");
+        this.lcdElement.classList.add("jsgbc-ui-canvas");
+        this._loadingChanged(this.loading);
+        this._fullscreenChanged(this.fullscreen);
+      },
+      _loadingChanged: function (newValue) {
+        if (!this.innerElement) return;
+        if (newValue) {
+          this.$.loading.style.display = "flex";
+          this.$.lcd.style.display = "none";
+          this.lcdElement.style.display = "none";
+        } else {
+          this.$.loading.style.display = "none";
+          this.$.lcd.style.display = "flex";
+          this.lcdElement.style.display = "flex";
+        }
+      },
+      _fullscreenChanged: function (newValue) {
+        if (!this.innerElement) return;
+        var hasClass = this.innerElement.classList.contains(this.fullscreenClassName);
+        if (newValue && !hasClass) {
+          this.innerElement.classList.add(this.fullscreenClassName);
+        } else if (!newValue && hasClass) {
+          this.innerElement.classList.remove(this.fullscreenClassName);
+        }
+      },
+      _handleDown: function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.fire("down", { button: e.currentTarget.id });
+        return false;
+      },
+      _handleUp: function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.fire("up", { button: e.currentTarget.id });
+        return false;
+      }
+    });
+
+  </script>
+</dom-module>
+
+
+
+
+
+<script>
+
+  (function() {
+
+    // monostate data
+    var metaDatas = {};
+    var metaArrays = {};
+    var singleton = null;
+
+    Polymer.IronMeta = Polymer({
+
+      is: 'iron-meta',
+
+      properties: {
+
+        /**
+         * The type of meta-data.  All meta-data of the same type is stored
+         * together.
+         */
+        type: {
+          type: String,
+          value: 'default',
+          observer: '_typeChanged'
+        },
+
+        /**
+         * The key used to store `value` under the `type` namespace.
+         */
+        key: {
+          type: String,
+          observer: '_keyChanged'
+        },
+
+        /**
+         * The meta-data to store or retrieve.
+         */
+        value: {
+          type: Object,
+          notify: true,
+          observer: '_valueChanged'
+        },
+
+        /**
+         * If true, `value` is set to the iron-meta instance itself.
+         */
+         self: {
+          type: Boolean,
+          observer: '_selfChanged'
+        },
+
+        /**
+         * Array of all meta-data values for the given type.
+         */
+        list: {
+          type: Array,
+          notify: true
+        }
+
+      },
+
+      hostAttributes: {
+        hidden: true
+      },
+
+      /**
+       * Only runs if someone invokes the factory/constructor directly
+       * e.g. `new Polymer.IronMeta()`
+       *
+       * @param {{type: (string|undefined), key: (string|undefined), value}=} config
+       */
+      factoryImpl: function(config) {
+        if (config) {
+          for (var n in config) {
+            switch(n) {
+              case 'type':
+              case 'key':
+              case 'value':
+                this[n] = config[n];
+                break;
+            }
+          }
+        }
+      },
+
+      created: function() {
+        // TODO(sjmiles): good for debugging?
+        this._metaDatas = metaDatas;
+        this._metaArrays = metaArrays;
+      },
+
+      _keyChanged: function(key, old) {
+        this._resetRegistration(old);
+      },
+
+      _valueChanged: function(value) {
+        this._resetRegistration(this.key);
+      },
+
+      _selfChanged: function(self) {
+        if (self) {
+          this.value = this;
+        }
+      },
+
+      _typeChanged: function(type) {
+        this._unregisterKey(this.key);
+        if (!metaDatas[type]) {
+          metaDatas[type] = {};
+        }
+        this._metaData = metaDatas[type];
+        if (!metaArrays[type]) {
+          metaArrays[type] = [];
+        }
+        this.list = metaArrays[type];
+        this._registerKeyValue(this.key, this.value);
+      },
+
+      /**
+       * Retrieves meta data value by key.
+       *
+       * @method byKey
+       * @param {string} key The key of the meta-data to be returned.
+       * @return {*}
+       */
+      byKey: function(key) {
+        return this._metaData && this._metaData[key];
+      },
+
+      _resetRegistration: function(oldKey) {
+        this._unregisterKey(oldKey);
+        this._registerKeyValue(this.key, this.value);
+      },
+
+      _unregisterKey: function(key) {
+        this._unregister(key, this._metaData, this.list);
+      },
+
+      _registerKeyValue: function(key, value) {
+        this._register(key, value, this._metaData, this.list);
+      },
+
+      _register: function(key, value, data, list) {
+        if (key && data && value !== undefined) {
+          data[key] = value;
+          list.push(value);
+        }
+      },
+
+      _unregister: function(key, data, list) {
+        if (key && data) {
+          if (key in data) {
+            var value = data[key];
+            delete data[key];
+            this.arrayDelete(list, value);
+          }
+        }
+      }
+
+    });
+
+    Polymer.IronMeta.getIronMeta = function getIronMeta() {
+       if (singleton === null) {
+         singleton = new Polymer.IronMeta();
+       }
+       return singleton;
+     };
+
+    /**
+    `iron-meta-query` can be used to access infomation stored in `iron-meta`.
+
+    Examples:
+
+    If I create an instance like this:
+
+        <iron-meta key="info" value="foo/bar"></iron-meta>
+
+    Note that value="foo/bar" is the metadata I've defined. I could define more
+    attributes or use child nodes to define additional metadata.
+
+    Now I can access that element (and it's metadata) from any `iron-meta-query` instance:
+
+         var value = new Polymer.IronMetaQuery({key: 'info'}).value;
+
+    @group Polymer Iron Elements
+    @element iron-meta-query
+    */
+    Polymer.IronMetaQuery = Polymer({
+
+      is: 'iron-meta-query',
+
+      properties: {
+
+        /**
+         * The type of meta-data.  All meta-data of the same type is stored
+         * together.
+         */
+        type: {
+          type: String,
+          value: 'default',
+          observer: '_typeChanged'
+        },
+
+        /**
+         * Specifies a key to use for retrieving `value` from the `type`
+         * namespace.
+         */
+        key: {
+          type: String,
+          observer: '_keyChanged'
+        },
+
+        /**
+         * The meta-data to store or retrieve.
+         */
+        value: {
+          type: Object,
+          notify: true,
+          readOnly: true
+        },
+
+        /**
+         * Array of all meta-data values for the given type.
+         */
+        list: {
+          type: Array,
+          notify: true
+        }
+
+      },
+
+      /**
+       * Actually a factory method, not a true constructor. Only runs if
+       * someone invokes it directly (via `new Polymer.IronMeta()`);
+       *
+       * @param {{type: (string|undefined), key: (string|undefined)}=} config
+       */
+      factoryImpl: function(config) {
+        if (config) {
+          for (var n in config) {
+            switch(n) {
+              case 'type':
+              case 'key':
+                this[n] = config[n];
+                break;
+            }
+          }
+        }
+      },
+
+      created: function() {
+        // TODO(sjmiles): good for debugging?
+        this._metaDatas = metaDatas;
+        this._metaArrays = metaArrays;
+      },
+
+      _keyChanged: function(key) {
+        this._setValue(this._metaData && this._metaData[key]);
+      },
+
+      _typeChanged: function(type) {
+        this._metaData = metaDatas[type];
+        this.list = metaArrays[type];
+        if (this.key) {
+          this._keyChanged(this.key);
+        }
+      },
+
+      /**
+       * Retrieves meta data value by key.
+       * @param {string} key The key of the meta-data to be returned.
+       * @return {*}
+       */
+      byKey: function(key) {
+        return this._metaData && this._metaData[key];
+      }
+
+    });
+
+  })();
+</script><dom-module id="iron-icon" assetpath="bower_components/iron-icon/">
   <template>
     <style>
       :host {
@@ -13238,8 +13361,11 @@ within `fitInto` boundaries, while preserving the element's CSS margin values.
     this._backdropElement = null;
 
     // Enable document-wide tap recognizer.
-    Polymer.Gestures.add(document, 'tap', this._onCaptureClick.bind(this));
-
+    // NOTE: Use useCapture=true to avoid accidentally prevention of the closing
+    // of an overlay via event.stopPropagation(). The only way to prevent
+    // closing of an overlay should be through its APIs.
+    Polymer.Gestures.add(document, 'tap', null);
+    document.addEventListener('tap', this._onCaptureClick.bind(this), true);
     document.addEventListener('focus', this._onCaptureFocus.bind(this), true);
     document.addEventListener('keydown', this._onCaptureKeyDown.bind(this), true);
   };
@@ -14555,10 +14681,11 @@ within `fitInto` boundaries, while preserving the element's CSS margin values.
     paper-fab-speed-dial {
       --paper-fab-speed-dial-background: #b2e200;
     }
-
+    
     paper-fab-speed-dial-action {
       --paper-fab-speed-dial-action-background: #b2e200;
     }
+
   </style>
   <paper-fab-speed-dial icon="menu">
     <paper-fab-speed-dial-action icon="icons:file-upload" id="upload-save">Upload Save</paper-fab-speed-dial-action>
@@ -14566,12 +14693,12 @@ within `fitInto` boundaries, while preserving the element's CSS margin values.
     <paper-fab-speed-dial-action icon="icons:add" id="insert-cartridge">Insert Cartridge</paper-fab-speed-dial-action>
   </paper-fab-speed-dial>
   <script>
-  window.addEventListener("WebComponentsReady", function() {
-  window.WebComponentsReady = true;
-});
-</script>
-  <script src="index.js"></script>
+    window.addEventListener("WebComponentsReady", function () {
+      window.WebComponentsReady = true;
+    });
 
+  </script>
+  <script src="index.js"></script>
 
 
 

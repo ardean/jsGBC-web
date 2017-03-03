@@ -24,10 +24,10 @@ function init() {
 
   fullscreen.on("change", () => {
     if (fullscreen.isActive) {
-      $screen.addClass("fullscreen");
+      jsGBCui.fullscreen = true;
     } else {
       PointerLock.exitPointerLock();
-      $screen.removeClass("fullscreen");
+      jsGBCui.fullscreen = false;
     }
   });
 
@@ -42,7 +42,7 @@ function init() {
   notifier.bind(gameboy);
   notifier.appendTo(jsGBCui.screenElement);
 
-  $jsGBCui.removeAttr("loading");
+  jsGBCui.loading = false;
 
   function toggleFullscreen() {
     if (fullscreen.isActive) {
