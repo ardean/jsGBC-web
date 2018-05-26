@@ -1,5 +1,6 @@
 # jsGBC-web
 
+[![Github Version][gh-image]][gh-url]
 [![NPM Version][npm-image]][downloads-url]
 [![NPM Downloads][downloads-image]][downloads-url]
 [![License][license-image]][license-url]
