@@ -20,6 +20,8 @@
 
 [MIT](LICENSE.md)
 
+[gh-image]: https://img.shields.io/github/release/ardean/jsGBC-web.svg
+[gh-url]: https://github.com/ardean/jsGBC-web
 [downloads-image]: https://img.shields.io/npm/dm/jsgbc.svg
 [downloads-url]: https://npmjs.org/package/jsgbc
 [npm-image]: https://img.shields.io/npm/v/jsgbc.svg
