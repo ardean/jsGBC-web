@@ -8,6 +8,14 @@
 
 [Demo](https://ardean.github.io/jsGBC-web/)
 
+## Setup
+
+```bash
+ > bower i
+ > yarn install
+ > yarn start
+```
+
 ## License
 
 [MIT](LICENSE.md)

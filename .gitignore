@@ -1,8 +1,4 @@
 .DS_Store
-node_modules
-jspm_packages
+/node_modules
 /bower_components
 *.log
-/index.js
-/index.html
-/index.css

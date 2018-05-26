@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "module": "es6",
+    "lib": [
+      "dom",
+      "es6"
+    ],
+    "target": "es5"
+  },
+  "include": [
+    "src",
+    "typings"
+  ]
+}

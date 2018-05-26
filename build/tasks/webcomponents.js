@@ -1,7 +1,7 @@
 const gulp = require("gulp");
 const vulcanize = require("gulp-vulcanize");
 
-gulp.task("build-webcomponents", ["build-html"], () => {
+gulp.task("build-webcomponents", () => {
   return gulp
     .src("index.html")
     .pipe(

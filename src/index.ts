@@ -1,12 +1,12 @@
-import $ from "jquery";
-import GameBoy from "jsgbc-core";
-import softwareButtons from "./software-buttons.js";
-import keyboardButtons from "./keyboard-buttons.js";
-import gamepadButtons from "./gamepad-buttons.js";
+import * as $ from "jquery";
+import GameBoy from "jsgbc";
+import softwareButtons from "./software-buttons";
+import keyboardButtons from "./keyboard-buttons";
+import gamepadButtons from "./gamepad-buttons";
 import Fullscreen from "jsfullscreen";
 import PointerLock from "jspointerlock";
-import fabButtons from "./fab-buttons.js";
-import notifier from "./notifier.js";
+import fileButtons from "./file-buttons";
+import notifier from "./notifier";
 
 if (window.WebComponentsReady) {
   init();
@@ -16,7 +16,7 @@ if (window.WebComponentsReady) {
 
 function init() {
   const $jsGBCui = $("jsgbc-ui");
-  const jsGBCui = $jsGBCui.get(0);
+  const jsGBCui = $jsGBCui.get(0) as any;
   const $screen = $(jsGBCui.screenElement);
   const gameboy = new GameBoy(jsGBCui.lcdElement);
   const fullscreen = new Fullscreen($screen);
@@ -38,7 +38,7 @@ function init() {
   keyboardButtons.bind(gameboy);
   softwareButtons.bind(gameboy, jsGBCui);
   gamepadButtons.bind(gameboy);
-  fabButtons.bind(gameboy);
+  fileButtons.bind(gameboy);
   notifier.bind(gameboy);
   notifier.appendTo(jsGBCui.screenElement);
 

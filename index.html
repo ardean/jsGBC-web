@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>jsGBC-web</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#477c59" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="jsGBC-web" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="#477c59">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="./styles/index.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous" />
+
+  <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <link rel="import" href="bower_components/jsgbc-ui/jsgbc-ui.html" />
+</head>
+
+<body>
+  <jsgbc-ui loading>
+    <h1 slot="loading">Loading...</h1>
+    <canvas class="pixelated" slot="lcd"></canvas>
+  </jsgbc-ui>
+
+  <div class="file-button-bar">
+    <file-button id="insert-cartridge">
+      <div class="text">Insert Cartridge</div>
+      <i class="far fa-caret-square-down fa-3x"></i>
+      <input type="file" accept=".gb, .gbc" />
+    </file-button>
+
+    <file-button id="download-save" class="disabled">
+      <div class="text">Download Save</div>
+      <i class="far fa-arrow-alt-circle-down fa-3x"></i>
+    </file-button>
+
+    <file-button id="upload-save" class="disabled">
+      <div class="text">Upload Save</div>
+      <i class="far fa-arrow-alt-circle-up fa-3x"></i>
+      <input type="file" accept=".sav" />
+    </file-button>
+  </div>
+
+  <script>
+    window.addEventListener("WebComponentsReady", function () {
+      window.WebComponentsReady = true;
+    });
+
+  </script>
+  <script src="jsgbc-web.js"></script>
+</body>
+
+</html>

@@ -1,7 +1,7 @@
-import $ from "jquery";
-import keyboardMapping from "./keyboard-mapping.js";
+import * as $ from "jquery";
+import keyboardMapping from "./keyboard-mapping";
 
-class KeyboardButtons {
+export class KeyboardButtons {
   bind(gameboy) {
     window.addEventListener("keydown", e => {
       if (gameboy.actions.is(keyboardMapping[e.keyCode])) {

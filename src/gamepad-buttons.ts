@@ -1,10 +1,10 @@
-import $ from "jquery";
+import * as $ from "jquery";
 import gamepad from "jsgamepad";
-import { Standard as gamepadMapping } from "./gamepad-mappings.js";
+import { Standard as gamepadMapping } from "./gamepad-mappings";
 
 // TODO: implement save & load state in core
 
-class GamepadButtons {
+export class GamepadButtons {
   bind(gameboy) {
     gamepad.on("buttonPressed", ({ buttonIndex, button, gamepad }) => {
       gameboy.actionDown(gamepadMapping[buttonIndex]);

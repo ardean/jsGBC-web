@@ -1,6 +1,6 @@
-import $ from "jquery";
+import * as $ from "jquery";
 
-class SoftwareButtons {
+export class SoftwareButtons {
   bind(gameboy, jsGBCui) {
     jsGBCui.addEventListener("down", ({ detail }) => {
       gameboy.actionDown(detail.button);

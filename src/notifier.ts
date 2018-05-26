@@ -1,6 +1,9 @@
-import $ from "jquery";
+import * as $ from "jquery";
 
-class Notifier {
+export class Notifier {
+  timeout: number;
+  $element: JQuery<HTMLElement>;
+
   constructor() {
     this.$element = $("<div />").css({
       display: "none",
@@ -17,10 +20,10 @@ class Notifier {
   bind(gameboy) {
     gameboy
       .on("stateLoaded", ({ filename }) => {
-        notifier.notify("Loaded " + filename);
+        this.notify("Loaded " + filename);
       })
       .on("stateSaved", ({ filename }) => {
-        notifier.notify("Saved  " + filename);
+        this.notify("Saved  " + filename);
       });
   }
 
@@ -29,7 +32,7 @@ class Notifier {
       clearTimeout(this.timeout);
     }
 
-    this.timeout = setTimeout(this.hide, 500);
+    this.timeout = window.setTimeout(this.hide, 500);
 
     this.$element.text(message);
     this.$element.show();

@@ -27,7 +27,6 @@
     "tests"
   ],
   "dependencies": {
-    "jsgbc-ui": "jsGBC-ui#v0.2.2",
-    "paper-fab-speed-dial": "^1.0.16"
+    "jsgbc-ui": "jsGBC-ui#v0.2.2"
   }
 }
