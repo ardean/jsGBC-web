@@ -1,4 +1,8 @@
+export type PromptEvent = Event & { prompt(): void };
+
 export class Homescreen {
+  promptEvent: PromptEvent;
+
   async bind() {
     if ("serviceWorker" in navigator) {
       try {
@@ -8,10 +12,14 @@ export class Homescreen {
       }
     }
 
-    window.addEventListener("beforeinstallprompt", function (e: Event & { prompt(): void }) {
+    window.addEventListener("beforeinstallprompt", (e: PromptEvent) => {
       e.preventDefault();
-      e.prompt();
+      this.promptEvent = e;
     });
+  }
+
+  prompt() {
+    this.promptEvent.prompt();
   }
 }
 

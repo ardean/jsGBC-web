@@ -45,7 +45,9 @@ async function init() {
 
   jsGBCui.loading = false;
 
-  await homescreen.bind();
+  homescreen.bind().then(() => {
+    ask();
+  });
 
   function toggleFullscreen() {
     if (fullscreen.isActive) {
@@ -56,4 +58,13 @@ async function init() {
       pointerLock.requestPointerLock();
     }
   }
+}
+
+function ask() {
+  const element = document.querySelector(".ribbon") as HTMLElement;
+  element.textContent = "Add to Homescreen";
+  element.addEventListener("click", e => {
+    e.preventDefault();
+    homescreen.prompt();
+  });
 }
