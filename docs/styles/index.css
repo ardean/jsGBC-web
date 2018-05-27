@@ -110,3 +110,18 @@ file-button.disabled i {
 file-button.disabled input[type="file"] {
   display: none;
 }
+
+@media (max-width: 414px) {
+  /* TODO: this is a hack, refactor jsGBC-ui */
+  jsgbc-ui #inner.jsgbc-ui-inner.jsgbc-ui {
+    width: 100vw;
+    height: 100vh;
+    min-width: auto;
+    min-height: 709px;
+    max-width: none;
+    max-height: 709px;
+  }
+  .main-wrapper {
+    padding: 0;
+  }
+}
