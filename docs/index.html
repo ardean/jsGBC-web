@@ -9355,28 +9355,35 @@ this.fire('dom-change');
   </script>
 </dom-module>
 </div>
-  <jsgbc-ui loading="">
-    <h1 slot="loading">Loading...</h1>
-    <canvas class="pixelated" slot="lcd"></canvas>
-  </jsgbc-ui>
+  <div class="background"></div>
+  <div class="main">
+    <div class="main-center">
+      <div class="main-wrapper">
+        <jsgbc-ui loading="">
+          <h1 slot="loading">Loading...</h1>
+          <canvas class="pixelated" slot="lcd"></canvas>
+        </jsgbc-ui>
 
-  <div class="file-button-bar">
-    <file-button id="insert-cartridge">
-      <div class="text">Insert Cartridge</div>
-      <i class="far fa-caret-square-down fa-3x"></i>
-      <input type="file" accept=".gb, .gbc">
-    </file-button>
+        <div class="file-button-bar">
+          <file-button id="insert-cartridge">
+            <div class="text">Insert Cartridge</div>
+            <i class="far fa-caret-square-down fa-3x"></i>
+            <input type="file" accept=".gb, .gbc">
+          </file-button>
 
-    <file-button id="download-save" class="disabled">
-      <div class="text">Download Save</div>
-      <i class="far fa-arrow-alt-circle-down fa-3x"></i>
-    </file-button>
+          <file-button id="download-save" class="disabled">
+            <div class="text">Download Save</div>
+            <i class="far fa-arrow-alt-circle-down fa-3x"></i>
+          </file-button>
 
-    <file-button id="upload-save" class="disabled">
-      <div class="text">Upload Save</div>
-      <i class="far fa-arrow-alt-circle-up fa-3x"></i>
-      <input type="file" accept=".sav">
-    </file-button>
+          <file-button id="upload-save" class="disabled">
+            <div class="text">Upload Save</div>
+            <i class="far fa-arrow-alt-circle-up fa-3x"></i>
+            <input type="file" accept=".sav">
+          </file-button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
