@@ -12,9 +12,12 @@ export class Homescreen {
       }
     }
 
-    window.addEventListener("beforeinstallprompt", (e: PromptEvent) => {
-      e.preventDefault();
-      this.promptEvent = e;
+    return new Promise(resolve => {
+      window.addEventListener("beforeinstallprompt", (e: PromptEvent) => {
+        e.preventDefault();
+        this.promptEvent = e;
+        resolve();
+      });
     });
   }
 
