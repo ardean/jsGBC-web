@@ -7,6 +7,7 @@ import Fullscreen from "jsfullscreen";
 import PointerLock from "jspointerlock";
 import fileButtons from "./file-buttons";
 import notifier from "./notifier";
+import homescreen from "./homescreen";
 
 if (window.WebComponentsReady) {
   init();
@@ -14,7 +15,7 @@ if (window.WebComponentsReady) {
   window.addEventListener("WebComponentsReady", init);
 }
 
-function init() {
+async function init() {
   const $jsGBCui = $("jsgbc-ui");
   const jsGBCui = $jsGBCui.get(0) as any;
   const $screen = $(jsGBCui.screenElement);
@@ -43,6 +44,8 @@ function init() {
   notifier.appendTo(jsGBCui.screenElement);
 
   jsGBCui.loading = false;
+
+  await homescreen.bind();
 
   function toggleFullscreen() {
     if (fullscreen.isActive) {

@@ -1,5 +1,6 @@
 {
   "name": "jsGBC",
+  "short_name": "jsGBC",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -12,6 +13,7 @@
       "type": "image/png"
     }
   ],
+  "start_url": "/",
   "theme_color": "#477c59",
   "background_color": "#477c59",
   "display": "fullscreen"

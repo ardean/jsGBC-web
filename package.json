@@ -1,6 +1,6 @@
 {
   "name": "jsgbc-web",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A GameBoy Color Emulator for the Web",
   "main": "src/index.js",
   "repository": "https://github.com/ardean/jsGBC-web",
