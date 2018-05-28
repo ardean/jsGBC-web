@@ -19,10 +19,11 @@ self.addEventListener("install", function (e) {
   );
 });
 
-self.addEventListener("fetch", function (event) {
-  event.respondWith(
-    caches.match(event.request).then(function (response) {
-      return response || fetch(event.request);
+self.addEventListener("fetch", function (e) {
+  console.log("loading:", e.request.url);
+  e.respondWith(
+    caches.match(e.request).then(function (response) {
+      return response || fetch(e.request);
     })
   );
 });

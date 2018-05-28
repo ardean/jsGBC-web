@@ -46,8 +46,29 @@ async function init() {
   jsGBCui.loading = false;
 
   homescreen.bind().then(() => {
-    ask();
+    setAddToHomescreen();
   });
+
+  const ribbonElement = document.querySelector(".ribbon") as HTMLElement;
+  let ribbonText = ribbonElement.textContent;
+
+  function setAddToHomescreen() {
+    ribbonElement.textContent = "Add to Homescreen";
+    ribbonElement.addEventListener("click", addToHomescreen);
+    ribbonElement.classList.add("highlighted");
+  }
+
+  function unsetAddToHomescreen() {
+    ribbonElement.textContent = ribbonText;
+    ribbonElement.removeEventListener("click", addToHomescreen);
+    ribbonElement.classList.remove("highlighted");
+  }
+
+  async function addToHomescreen(e) {
+    e.preventDefault();
+    await homescreen.prompt();
+    unsetAddToHomescreen();
+  }
 
   function toggleFullscreen() {
     if (fullscreen.isActive) {
@@ -58,13 +79,4 @@ async function init() {
       pointerLock.requestPointerLock();
     }
   }
-}
-
-function ask() {
-  const element = document.querySelector(".ribbon") as HTMLElement;
-  element.textContent = "Add to Homescreen";
-  element.addEventListener("click", e => {
-    e.preventDefault();
-    homescreen.prompt();
-  });
 }

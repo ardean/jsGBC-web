@@ -1,4 +1,4 @@
-export type PromptEvent = Event & { prompt(): void };
+export type PromptEvent = Event & { prompt(): void, userChoice: Promise<any> };
 
 export class Homescreen {
   promptEvent: PromptEvent;
@@ -21,8 +21,9 @@ export class Homescreen {
     });
   }
 
-  prompt() {
+  async prompt() {
     this.promptEvent.prompt();
+    return await this.promptEvent.userChoice;
   }
 }
 

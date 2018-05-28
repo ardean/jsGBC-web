@@ -5,9 +5,6 @@
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
   transform: rotate(-45deg);
-  -webkit-box-shadow: 0 0 0 1px #1d212e inset, 0 0 2px 1px #fff inset, 0 0 1em #888;
-  -moz-box-shadow: 0 0 0 1px #1d212e inset, 0 0 2px 1px #fff inset, 0 0 1em #888;
-  box-shadow: 0 0 0 1px #1d212e inset, 0 0 2px 1px #fff inset, 0 0 1em #888;
   color: rgba(255, 255, 255, 0.90);
   display: block;
   padding: .6em 3.5em;
@@ -15,8 +12,13 @@
   font: bold .82em "Open Sans";
   text-align: center;
   text-decoration: none;
-  text-shadow: 1px -1px 8px rgba(0, 0, 0, 0.60);
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+  transition: background-color 0.2s ease-out;
+  outline: none;
+}
+
+.ribbon.highlighted {
+  background-color: #b2e200;
 }
