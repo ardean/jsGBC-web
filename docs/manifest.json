@@ -1,6 +1,7 @@
 {
   "name": "jsGBC",
   "short_name": "jsGBC",
+  "description": "A GameBoy Color Emulator written in JavaScript",
   "icons": [
     {
       "src": "/jsGBC-web/android-chrome-192x192.png",
@@ -13,7 +14,9 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/jsGBC-web",
+  "serviceWorker": "/jsGBC-web/service-worker.js",
+  "start_url": "/jsGBC-web/",
+  "scope": "/jsGBC-web/",
   "theme_color": "#477c59",
   "background_color": "#477c59",
   "display": "fullscreen"
