@@ -1,4 +1,3 @@
-import * as $ from "jquery";
 import { util } from "jsgbc";
 
 export class FabButtons {
@@ -7,9 +6,9 @@ export class FabButtons {
   bind(gameboy) {
     this.gameboy = gameboy;
 
-    const insertCartridgeButton = document.querySelector("#insert-cartridge");
+    const insertCartridgeButton = document.querySelector<HTMLInputElement>("#insert-cartridge");
     const downloadSaveButton = document.querySelector("#download-save");
-    const uploadSaveButton = document.querySelector("#upload-save");
+    const uploadSaveButton = document.querySelector<HTMLInputElement>("#upload-save");
 
     const insertCartridgeInput = insertCartridgeButton.querySelector("input") as HTMLInputElement;
     const uploadSaveInput = uploadSaveButton.querySelector("input") as HTMLInputElement;
@@ -18,8 +17,9 @@ export class FabButtons {
       downloadSaveButton.classList.remove("disabled");
       uploadSaveButton.classList.remove("disabled");
 
-      const result = await this.readFile(insertCartridgeInput);
-      gameboy.replaceCartridge(result);
+      const file = insertCartridgeInput.files[0];
+      const rom = await util.readCartridgeROM(file, file.name);
+      gameboy.replaceCartridge(rom);
     });
 
     downloadSaveButton.addEventListener("click", () => {
@@ -31,25 +31,9 @@ export class FabButtons {
     uploadSaveInput.addEventListener("change", async () => {
       if (!gameboy.core.cartridgeSlot.cartridge) return;
 
-      const result = await this.readFile(uploadSaveInput);
+      const file = uploadSaveInput.files[0];
+      const result = await util.readBlob(file);
       await gameboy.loadBatteryFileArrayBuffer(result);
-    });
-  }
-
-  async readFile(element: HTMLInputElement) {
-    return new Promise<FileReader["result"]>((resolve, reject) => {
-      if (element.files.length > 0) {
-        const file = element.files[0];
-        const binaryHandle = new FileReader();
-        binaryHandle.addEventListener("load", function () {
-          if (this.readyState === 2) {
-            resolve(this.result);
-          }
-        });
-        binaryHandle.readAsBinaryString(file);
-      } else {
-        reject();
-      }
     });
   }
 }

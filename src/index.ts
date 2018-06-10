@@ -19,7 +19,9 @@ async function init() {
   const $jsGBCui = $("jsgbc-ui");
   const jsGBCui = $jsGBCui.get(0) as any;
   const $screen = $(jsGBCui.screenElement);
-  const gameboy = new GameBoy(jsGBCui.lcdElement);
+  const gameboy = new GameBoy({
+    lcd: { canvas: jsGBCui.lcdElement }
+  });
   const fullscreen = new Fullscreen($screen);
   const pointerLock = new PointerLock($screen);
 
