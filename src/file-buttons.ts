@@ -1,9 +1,9 @@
-import { util } from "jsgbc";
+import { util, GameBoy } from "jsgbc";
 
 export class FabButtons {
   gameboy: any;
 
-  bind(gameboy) {
+  bind(gameboy: GameBoy) {
     this.gameboy = gameboy;
 
     const insertCartridgeButton = document.querySelector<HTMLInputElement>("#insert-cartridge");
@@ -23,13 +23,13 @@ export class FabButtons {
     });
 
     downloadSaveButton.addEventListener("click", () => {
-      if (!gameboy.core.cartridgeSlot.cartridge) return;
+      if (!gameboy.core.cartridge) return;
 
-      util.downloadFile(gameboy.core.cartridgeSlot.cartridge.name + ".sav", gameboy.getBatteryFileArrayBuffer());
+      util.downloadFile(gameboy.core.cartridge.name + ".sav", gameboy.getBatteryFileArrayBuffer());
     });
 
     uploadSaveInput.addEventListener("change", async () => {
-      if (!gameboy.core.cartridgeSlot.cartridge) return;
+      if (!gameboy.core.cartridge) return;
 
       const file = uploadSaveInput.files[0];
       const result = await util.readBlob(file);
