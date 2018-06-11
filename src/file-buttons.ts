@@ -25,7 +25,7 @@ export class FabButtons {
     downloadSaveButton.addEventListener("click", () => {
       if (!gameboy.core.cartridge) return;
 
-      util.downloadFile(gameboy.core.cartridge.name + ".sav", gameboy.getBatteryFileArrayBuffer());
+      util.saveAs(gameboy.getBatteryFileArrayBuffer(), gameboy.core.cartridge.name + ".sav");
     });
 
     uploadSaveInput.addEventListener("change", async () => {

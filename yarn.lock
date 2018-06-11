@@ -31,6 +31,10 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
 
+"@types/file-saver@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-1.3.0.tgz#0ef213077e704fc3f4e7a86cfd31c9de4f4f47a7"
+
 "@types/jquery@^3.3.2":
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.2.tgz#8700226bdde24b6f98e3a60126dbaab3b2a3ab41"
@@ -2284,6 +2288,10 @@ figures@^2.0.0:
   dependencies:
     escape-string-regexp "^1.0.5"
 
+file-saver@^1.3.8:
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-1.3.8.tgz#e68a30c7cb044e2fb362b428469feb291c2e09d8"
+
 filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
@@ -3474,11 +3482,13 @@ jsgamepad@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/jsgamepad/-/jsgamepad-0.1.0.tgz#360b095f8dd33ef03fae38c9fb1d4b8ba3bcada8"
 
-jsgbc@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/jsgbc/-/jsgbc-0.5.1.tgz#4da38373306c790ae3bb677d1c12c3cc458cafff"
+jsgbc@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/jsgbc/-/jsgbc-0.5.2.tgz#70d14a725382c1c2f9ddc8f21c97494529215ed8"
   dependencies:
     "@types/events" "^1.2.0"
+    "@types/file-saver" "^1.3.0"
+    file-saver "^1.3.8"
     jszip "^3.1.5"
 
 json-buffer@3.0.0:
