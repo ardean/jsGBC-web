@@ -1,6 +1,6 @@
 {
   "name": "jsgbc-web",
-  "version": "0.5.2",
+  "version": "0.5.4",
   "description": "A GameBoy Color Emulator for the Web",
   "main": "src/index.js",
   "repository": "https://github.com/ardean/jsGBC-web",
@@ -27,7 +27,7 @@
     "jquery": "^3.3.1",
     "jsfullscreen": "^0.1.0",
     "jsgamepad": "^0.1.0",
-    "jsgbc": "^0.5.2",
+    "jsgbc": "^0.5.4",
     "jspointerlock": "^1.0.0"
   },
   "devDependencies": {
