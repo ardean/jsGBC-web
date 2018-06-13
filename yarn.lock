@@ -3482,9 +3482,9 @@ jsgamepad@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/jsgamepad/-/jsgamepad-0.1.0.tgz#360b095f8dd33ef03fae38c9fb1d4b8ba3bcada8"
 
-jsgbc@^0.5.7:
-  version "0.5.7"
-  resolved "https://registry.yarnpkg.com/jsgbc/-/jsgbc-0.5.7.tgz#44491e2cac8f8443dd18d0a90695d835e8fee197"
+jsgbc@^0.5.8:
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/jsgbc/-/jsgbc-0.5.8.tgz#7e89ab8f32ae6f1a295d258c2481748024e65d44"
   dependencies:
     "@types/events" "^1.2.0"
     "@types/file-saver" "^1.3.0"
