@@ -1,18 +1,16 @@
-import * as $ from "jquery";
-
 export class Notifier {
   timeout: number;
-  $element: JQuery<HTMLElement>;
+  element: HTMLElement;
 
   constructor() {
-    this.$element = $("<div />").css({
-      display: "none",
-      position: "absolute",
-      top: "5px",
-      right: "5px",
-      fontSize: "25px",
-      color: "red"
-    });
+    this.element = document.createElement("div");
+
+    this.element.style.display = "none";
+    this.element.style.position = "absolute";
+    this.element.style.top = "5px";
+    this.element.style.right = "5px";
+    this.element.style.fontSize = "25px";
+    this.element.style.color = "red";
 
     this.hide = this.hide.bind(this);
   }
@@ -34,17 +32,17 @@ export class Notifier {
 
     this.timeout = window.setTimeout(this.hide, 500);
 
-    this.$element.text(message);
-    this.$element.show();
+    this.element.textContent = message;
+    this.element.style.display = "block";
   }
 
   hide() {
     this.timeout = null;
-    this.$element.hide();
+    this.element.style.display = "none";
   }
 
-  appendTo(element) {
-    this.$element.appendTo(element);
+  appendTo(element: HTMLElement) {
+    this.element.appendChild(element);
   }
 }
 

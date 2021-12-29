@@ -2,15 +2,10 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "module": "es6",
-    "lib": [
-      "dom",
-      "es6"
-    ],
-    "target": "es5"
+    "module": "CommonJS",
+    "target": "ES2020"
   },
   "include": [
-    "src",
-    "typings"
+    "src"
   ]
 }

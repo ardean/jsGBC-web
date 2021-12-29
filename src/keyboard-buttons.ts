@@ -1,4 +1,3 @@
-import * as $ from "jquery";
 import keyboardMapping from "./keyboard-mapping";
 
 export class KeyboardButtons {

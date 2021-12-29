@@ -14,7 +14,6 @@
       "type": "image/png"
     }
   ],
-  "serviceWorker": "/jsGBC-web/service-worker.js",
   "start_url": "/jsGBC-web/",
   "scope": "/jsGBC-web/",
   "theme_color": "#477c59",

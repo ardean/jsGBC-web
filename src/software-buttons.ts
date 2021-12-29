@@ -1,5 +1,3 @@
-import * as $ from "jquery";
-
 export class SoftwareButtons {
   bind(gameboy, jsGBCui) {
     jsGBCui.addEventListener("down", ({ detail }) => {

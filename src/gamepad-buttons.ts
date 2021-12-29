@@ -1,4 +1,3 @@
-import * as $ from "jquery";
 import gamepad from "jsgamepad";
 import { Standard as gamepadMapping } from "./gamepad-mappings";
 

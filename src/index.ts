@@ -1,57 +1,60 @@
-import * as $ from "jquery";
 import GameBoy from "jsgbc";
+import notifier from "./notifier";
+import Fullscreen from "jsfullscreen";
+import homescreen from "./homescreen";
+import PointerLock from "jspointerlock";
+import fileButtons from "./fileButtons";
+import gamepadButtons from "./gamepad-buttons";
 import softwareButtons from "./software-buttons";
 import keyboardButtons from "./keyboard-buttons";
-import gamepadButtons from "./gamepad-buttons";
-import Fullscreen from "jsfullscreen";
-import PointerLock from "jspointerlock";
-import fileButtons from "./file-buttons";
-import notifier from "./notifier";
-import homescreen from "./homescreen";
 
-if (window.WebComponentsReady) {
-  init();
-} else {
-  window.addEventListener("WebComponentsReady", init);
-}
+(async () => {
+  if ("serviceWorker" in navigator) {
+    try {
+      await navigator.serviceWorker.register(
+        "/jsGBC-web/service-worker.js",
+        { scope: "/jsGBC-web/" }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
-async function init() {
-  const $jsGBCui = $("jsgbc-ui");
-  const jsGBCui = $jsGBCui.get(0) as any;
-  const $screen = $(jsGBCui.screenElement);
+  const jsGbcUI = document.querySelector<any>("jsgbc-ui");
+  const screen = jsGbcUI.screenElement;
   const gameboy = new GameBoy({
-    lcd: { canvas: jsGBCui.lcdElement }
+    lcd: { canvas: jsGbcUI.lcdElement }
   });
-  const fullscreen = new Fullscreen($screen);
-  const pointerLock = new PointerLock($screen);
+  const fullscreen = new Fullscreen(screen);
+  const pointerLock = new PointerLock(screen);
 
   fullscreen.on("change", () => {
     if (fullscreen.isActive) {
-      jsGBCui.fullscreen = true;
+      jsGbcUI.fullscreen = true;
     } else {
       PointerLock.exitPointerLock();
-      jsGBCui.fullscreen = false;
+      jsGbcUI.fullscreen = false;
     }
   });
 
-  $screen.on("dblclick", () => {
+  screen.addEventListener("dblclick", () => {
     toggleFullscreen();
   });
 
   keyboardButtons.bind(gameboy);
-  softwareButtons.bind(gameboy, jsGBCui);
+  softwareButtons.bind(gameboy, jsGbcUI);
   gamepadButtons.bind(gameboy);
   fileButtons.bind(gameboy);
   notifier.bind(gameboy);
-  notifier.appendTo(jsGBCui.screenElement);
+  notifier.appendTo(jsGbcUI.screenElement);
 
-  jsGBCui.loading = false;
+  jsGbcUI.loading = false;
 
   homescreen.bind().then(() => {
     setAddToHomescreen();
   });
 
-  const ribbonElement = document.querySelector(".ribbon") as HTMLElement;
+  const ribbonElement = document.querySelector<HTMLElement>(".ribbon");
   let ribbonText = ribbonElement.textContent;
 
   function setAddToHomescreen() {
@@ -81,4 +84,4 @@ async function init() {
       pointerLock.requestPointerLock();
     }
   }
-}
+})();
