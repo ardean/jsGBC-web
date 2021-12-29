@@ -30,7 +30,6 @@
     "jspointerlock": "^1.0.0"
   },
   "devDependencies": {
-    "clean-webpack-plugin": "^4.0.0",
     "cpy-cli": "^1.0.1",
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.4",
