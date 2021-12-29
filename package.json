@@ -26,12 +26,12 @@
   "dependencies": {
     "jsfullscreen": "^0.1.0",
     "jsgamepad": "^0.1.0",
-    "jsgbc": "^0.6.1",
+    "jsgbc": "^0.6.2",
     "jspointerlock": "^1.0.0"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
-    "cpy-cli": "^3.1.1",
+    "cpy-cli": "^1.0.1",
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.4",
     "webpack": "^5.65.0",
