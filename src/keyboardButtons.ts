@@ -1,7 +1,8 @@
-import keyboardMapping from "./keyboard-mapping";
+import GameBoy from "jsgbc";
+import keyboardMapping from "./keyboardMapping";
 
 export class KeyboardButtons {
-  bind(gameboy) {
+  bind(gameboy: GameBoy) {
     window.addEventListener("keydown", e => {
       if (gameboy.actions.is(keyboardMapping[e.keyCode])) {
         gameboy.actionDown(keyboardMapping[e.keyCode]);

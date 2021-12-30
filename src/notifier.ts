@@ -1,3 +1,5 @@
+import GameBoy from "jsgbc";
+
 export class Notifier {
   timeout: number;
   element: HTMLElement;
@@ -15,7 +17,7 @@ export class Notifier {
     this.hide = this.hide.bind(this);
   }
 
-  bind(gameboy) {
+  bind(gameboy: GameBoy) {
     gameboy
       .on("stateLoaded", ({ filename }) => {
         this.notify("Loaded " + filename);

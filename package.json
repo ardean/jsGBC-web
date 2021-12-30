@@ -26,7 +26,8 @@
   "dependencies": {
     "jsfullscreen": "^0.1.0",
     "jsgamepad": "^0.1.0",
-    "jsgbc": "^0.6.2",
+    "jsgbc": "^0.6.3",
+    "jsgbc-ui": "^0.3.0",
     "jspointerlock": "^1.0.0"
   },
   "devDependencies": {

@@ -1,12 +1,13 @@
 import GameBoy from "jsgbc";
+import JsGbcUI from "jsgbc-ui";
 import notifier from "./notifier";
 import Fullscreen from "jsfullscreen";
 import homescreen from "./homescreen";
 import PointerLock from "jspointerlock";
 import fileButtons from "./fileButtons";
-import gamepadButtons from "./gamepad-buttons";
-import softwareButtons from "./software-buttons";
-import keyboardButtons from "./keyboard-buttons";
+import gamepadButtons from "./gamepadButtons";
+import keyboardButtons from "./keyboardButtons";
+import softwareButtons from "./softwareButtons";
 
 (async () => {
   if ("serviceWorker" in navigator) {
@@ -20,20 +21,23 @@ import keyboardButtons from "./keyboard-buttons";
     }
   }
 
-  const jsGbcUI = document.querySelector<any>("jsgbc-ui");
-  const screen = jsGbcUI.screenElement;
+  const jsGbcUIElement = document.querySelector<HTMLElement>("jsgbc-ui");
+  const jsGbcUI = new JsGbcUI(jsGbcUIElement);
+  jsGbcUI.setLoading(true);
+
+  const screen = jsGbcUI.innerElement.querySelector<HTMLElement>(".jsgbc-ui-screen");
   const gameboy = new GameBoy({
-    lcd: { canvas: jsGbcUI.lcdElement }
+    lcd: { canvas: jsGbcUI.lcdSlotElement }
   });
   const fullscreen = new Fullscreen(screen);
   const pointerLock = new PointerLock(screen);
 
   fullscreen.on("change", () => {
     if (fullscreen.isActive) {
-      jsGbcUI.fullscreen = true;
+      jsGbcUI.setFullscreen(true);
     } else {
       PointerLock.exitPointerLock();
-      jsGbcUI.fullscreen = false;
+      jsGbcUI.setFullscreen(false);
     }
   });
 
@@ -46,9 +50,9 @@ import keyboardButtons from "./keyboard-buttons";
   gamepadButtons.bind(gameboy);
   fileButtons.bind(gameboy);
   notifier.bind(gameboy);
-  notifier.appendTo(jsGbcUI.screenElement);
+  notifier.appendTo(screen);
 
-  jsGbcUI.loading = false;
+  jsGbcUI.setLoading(false);
 
   homescreen.bind().then(() => {
     setAddToHomescreen();
