@@ -11,9 +11,8 @@
 ## Setup
 
 ```bash
- > bower i
- > yarn install
- > yarn start
+ > npm i
+ > npm start
 ```
 
 ## License

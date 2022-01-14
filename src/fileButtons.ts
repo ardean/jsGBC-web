@@ -1,7 +1,7 @@
 import { util, GameBoy } from "jsgbc";
 
 export class FabButtons {
-  gameboy: any;
+  gameboy: GameBoy;
 
   bind(gameboy: GameBoy) {
     this.gameboy = gameboy;
@@ -18,7 +18,7 @@ export class FabButtons {
       uploadSaveButton.classList.remove("disabled");
 
       const file = insertCartridgeInput.files[0];
-      const rom = await util.readCartridgeROM(file, file.name);
+      const rom = await util.readFirstMatchingExtension(file, file.name, ["gbc", "gb"]);
       gameboy.replaceCartridge(rom);
     });
 
